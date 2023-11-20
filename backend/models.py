@@ -9,13 +9,13 @@ form = {
     "age": 0,
     "gender": "",
     "married": False,
+    "education": [""],
     "address": {
         "city": "",
         "street": "",
         "building": "",
         "home": 0,
     },
-    "education": [""]
 }
 
 
@@ -35,3 +35,5 @@ class Employee(BaseModel):
     age: int
     gender: str
     married: bool
+    education: list[str]
+    address: EmployeeAddress

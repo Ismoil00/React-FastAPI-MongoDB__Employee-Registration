@@ -1,4 +1,4 @@
-
+from pydantic import BaseModel
 
 form = {
     "first_name": "",
@@ -15,5 +15,5 @@ form = {
         "building": "",
         "home": 0,
     },
-    
+    "education": [""]
 }

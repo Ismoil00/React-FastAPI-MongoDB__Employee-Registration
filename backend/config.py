@@ -1,8 +1,7 @@
 from pymongo import MongoClient
 
-URL = "mongodb+srv://ismoil:ismoil@myfirstcluster.11mqx2p.mongodb.net/?retryWrites=true&w=majority"
-
-client = MongoClient(URL)
+client = MongoClient(
+    "mongodb+srv://ismoil:ismoil@myfirstcluster.11mqx2p.mongodb.net/?retryWrites=true&w=majority")
 
 database = client.Employees_Registration_App
 

@@ -22,8 +22,8 @@ form = {
 class EmployeeAddress(BaseModel):
     city: str
     street: str
-    building: str
-    home: int
+    building: str | None = None
+    home: int | None = None
 
 
 class Employee(BaseModel):
@@ -31,9 +31,9 @@ class Employee(BaseModel):
     last_name: str
     email: str
     profession: str
-    salary: float
+    salary: float | None = None
     age: int
     gender: str
-    married: bool
-    education: list[str]
+    married: bool | None = None
+    education: list[str] | None = None
     address: EmployeeAddress

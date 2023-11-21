@@ -14,8 +14,12 @@ router = APIRouter()
 async def get_employees():
     try:
         employees = get_all_employees(employees_collection.find())
-        print(len(employees))
-        return employees
+
+        if len(employees) > 0:
+            return employees
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="The Database is empty!")
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

@@ -1,5 +1,6 @@
 def get_employee(employee):
     return {
+        "id": str(employee["_id"]),
         "first_name": employee["first_name"],
         "last_name": employee["last_name"],
         "email": employee["email"],

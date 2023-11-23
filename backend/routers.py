@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Form, UploadFile, Body
+from fastapi import APIRouter, HTTPException, status, UploadFile
 from models import Employee
 from config import employees_collection, database
 from fastapi.encoders import jsonable_encoder
@@ -29,6 +29,17 @@ async def get_employees():
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )
+
+
+# # saving image:
+# @router.post("/save-image")
+# async def save_image(image: UploadFile):
+#     if image:
+#         image_content = await image.read()
+#         image_id = fs.put(image_content, filename=image.filename,
+#                           content_type=image.content_type)
+#         print("this image id >>>", image_id)
+#         return "Success!"
 
 
 # creating a employee:
@@ -92,7 +103,8 @@ async def update_employee(id: str, info: Employee):
 @router.delete("/delete-employee/{id}")
 async def delete_employee(id: str):
     try:
-        result = employees_collection.find_one_and_delete({"_id": ObjectId(id)})
+        result = employees_collection.find_one_and_delete(
+            {"_id": ObjectId(id)})
 
         if result:
             return {

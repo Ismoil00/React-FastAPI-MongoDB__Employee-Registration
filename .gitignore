@@ -2,6 +2,10 @@
 /venv
 .env
 /env
+.venv/
+venv/
+.env/
+env/
 
 
 node_modules

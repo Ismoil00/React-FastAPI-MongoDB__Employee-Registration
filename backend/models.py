@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from fastapi import UploadFile
 
 form = {
     "first_name": "",
@@ -37,3 +38,4 @@ class Employee(BaseModel):
     married: bool | None = None
     education: list[str] | None = None
     address: EmployeeAddress
+    image_id: str | None = None

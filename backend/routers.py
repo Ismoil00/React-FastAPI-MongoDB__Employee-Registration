@@ -9,6 +9,7 @@ from gridfs import GridFS
 
 router = APIRouter()
 
+# MongoDB Method for saving large files (more than 16mb);
 fs = GridFS(database)
 
 
@@ -31,15 +32,26 @@ async def get_employees():
         )
 
 
-# # saving image:
-# @router.post("/save-image")
-# async def save_image(image: UploadFile):
-#     if image:
-#         image_content = await image.read()
-#         image_id = fs.put(image_content, filename=image.filename,
-#                           content_type=image.content_type)
-#         print("this image id >>>", image_id)
-#         return "Success!"
+# saving image:
+@router.post("/save-image")
+async def save_image(image: UploadFile):
+    try:
+        image_content = await image.read()
+        image_id = fs.put(
+            image_content, filename=image.filename, content_type=image.content_type
+        )
+
+        if image_id:
+            return image_id
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Image could not be saved",
+            )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
 
 
 # creating a employee:
@@ -47,15 +59,6 @@ async def get_employees():
 async def create_employee(info: Employee):
     try:
         employee_dict = jsonable_encoder(info)
-
-        # # Save the image to GridFS
-        # if image:
-        #     image_content = await image.read()
-        #     image_id = fs.put(
-        #         image_content, filename=image.filename, content_type=image.content_type
-        #     )
-        #     employee_dict["image_id"] = str(image_id)
-
         result = employees_collection.insert_one(employee_dict)
 
         if result.acknowledged:
@@ -103,8 +106,7 @@ async def update_employee(id: str, info: Employee):
 @router.delete("/delete-employee/{id}")
 async def delete_employee(id: str):
     try:
-        result = employees_collection.find_one_and_delete(
-            {"_id": ObjectId(id)})
+        result = employees_collection.find_one_and_delete({"_id": ObjectId(id)})
 
         if result:
             return {

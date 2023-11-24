@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 
-const ImageDisplay = ({ imageId }) => {
+const ImageDisplay = () => {
   const [imageSrc, setImageSrc] = useState(null);
+  const imageId = "6560a4898282d3b85c2fb3a3"
 
   useEffect(() => {
     const fetchImage = async () => {

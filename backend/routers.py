@@ -92,7 +92,7 @@ async def save_image(image: UploadFile):
         )
 
         if image_id:
-            return image_id
+            return str(image_id)
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

@@ -24,7 +24,12 @@ const ImageDisplay = () => {
     fetchImage();
   }, [imageId]);
 
-  return <div>{imageSrc && <img src={imageSrc} alt="this is test img" />}</div>;
+  return (
+    <div>
+      <h1>Image Section</h1>
+      {imageSrc && <img src={imageSrc} alt="this is test img" />}
+    </div>
+  );
 };
 
 export default ImageDisplay;

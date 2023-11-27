@@ -1,14 +1,20 @@
-import "./css/App.css";
-import ImageDisplay from "./components/get_image";
-import Main from "./components/Main";
-import Create from "./components/Create";
+import "./scss/App.scss";
 import RoutesComp from "./components/Routes";
-import Edit from "./components/Edit";
+import { createContext, useState } from "react";
+import EmoloyeeModel from "./helpers/employee-model";
+
+export const EditEmployeeContext = createContext(null);
 
 function App() {
+  const [editableEmployee, setEditableEmployee] = useState(EmoloyeeModel);
+
   return (
     <div className="App">
-      <RoutesComp />
+      <EditEmployeeContext.Provider
+        value={[editableEmployee, setEditableEmployee]}
+      >
+        <RoutesComp />
+      </EditEmployeeContext.Provider>
     </div>
   );
 }

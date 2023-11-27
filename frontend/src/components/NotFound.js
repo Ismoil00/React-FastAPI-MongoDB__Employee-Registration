@@ -1,7 +1,12 @@
 import React from "react";
+import "../scss/noFound.scss";
 
 const NotFound = () => {
-  return <div style={{ color: "red" }}> 404 NotFound</div>;
+  return (
+    <div className="not-found-text">
+      404 NotFound <br /> The Page Dose not exist!
+    </div>
+  );
 };
 
 export default NotFound;

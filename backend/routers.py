@@ -34,6 +34,7 @@ async def get_employees():
         )
 
 
+# get image:
 @router.get("/get-image/{image_id}")
 async def get_image(image_id: str):
     try:
@@ -137,7 +138,7 @@ async def delete_employee(id: str):
 
         if result:
             return {
-                "status": "Successfully deleted an employee",
+                "status": 200,
                 "id": str(result["_id"]),
             }
         else:
@@ -145,6 +146,20 @@ async def delete_employee(id: str):
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Failed to delete employee",
             )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
+
+
+# delete all employees:
+@router.delete("/delete-all-employees")
+async def delete_all_employees():
+    try:
+        result = employees_collection.delete_many({})
+
+        print("result", result)
+
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)

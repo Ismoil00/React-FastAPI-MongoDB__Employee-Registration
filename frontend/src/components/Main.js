@@ -1,69 +1,8 @@
 import React, { useEffect, useState } from "react";
-import EmoloyeeModel from "../helpers/employee-model";
 import { useNavigate } from "react-router-dom";
 import api from "../helpers/api";
 import { useContext } from "react";
 import { EditEmployeeContext } from "../App";
-
-const emps = [
-  {
-    id: 1,
-    first_name: "test",
-    last_name: "test",
-    email: "test@example.com",
-    profession: "test",
-    salary: 1000,
-    age: 1000,
-    gender: "male",
-    married: true,
-    education: ["test", "test"],
-    address: {
-      city: "test",
-      street: "test",
-      building: "test",
-      home: 25,
-    },
-    image_id: "test",
-  },
-  {
-    id: 2,
-    first_name: "test",
-    last_name: "test",
-    email: "test@example.com",
-    profession: "test",
-    salary: 1000,
-    age: 1000,
-    gender: "male",
-    married: true,
-    education: ["test", "test"],
-    address: {
-      city: "test",
-      street: "test",
-      building: "test",
-      home: 25,
-    },
-    image_id: "test",
-  },
-  {
-    id: 3,
-    first_name: "test",
-    last_name: "test",
-    email: "test@example.com",
-    profession: "test",
-    salary: 1000,
-    age: 1000,
-    gender: "male",
-    married: true,
-    education: ["test", "test"],
-    address: {
-      city: "test",
-      street: "test",
-      building: "test",
-      home: 25,
-    },
-    image_id: "test",
-  },
-];
 
 const Main = () => {
   const [emoloyees, setEmployees] = useState([]);
@@ -98,7 +37,12 @@ const Main = () => {
   // deleting an individual employee:
   const onDeleteEmployee = async (id) => {
     try {
-      console.log(id);
+      const response = await api.delete(`/delete-employee/${id}`);
+
+      if (response.status === 200)
+        alert(`an Employee with the ID: ${response.data.id}`);
+      else throw new Error("Something went wrong!");
+
     } catch (err) {
       console.log(err);
     }
@@ -127,7 +71,7 @@ const Main = () => {
             <img
               src="images/face.png"
               width={300}
-              alt="employee image"
+              alt="employee img"
               className="employee-img"
             />
             <p>

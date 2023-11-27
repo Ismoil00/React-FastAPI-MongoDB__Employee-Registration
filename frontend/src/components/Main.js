@@ -10,17 +10,20 @@ const Main = () => {
   const [_, setEditableEmployee] = useContext(EditEmployeeContext);
   const navigate = useNavigate();
 
+  // fetch all employees:
+  const fetchAllEmployees = async () => {
+    try {
+      const response = await api.get("/get-employees");
+      setEmployees(response.data);
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data.detail);
+    }
+  };
+
   // on initial load:
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await api.get("/get-employees");
-        setEmployees(response.data);
-      } catch (err) {
-        console.log(err);
-        setError(err.response.data.detail);
-      }
-    })();
+    fetchAllEmployees();
   }, []);
 
   // creating new employee:
@@ -39,10 +42,10 @@ const Main = () => {
     try {
       const response = await api.delete(`/delete-employee/${id}`);
 
-      if (response.status === 200)
+      if (response.status === 200) {
         alert(`an Employee with the ID: ${response.data.id}`);
-      else throw new Error("Something went wrong!");
-
+        fetchAllEmployees();
+      } else throw new Error("Something went wrong!");
     } catch (err) {
       console.log(err);
     }

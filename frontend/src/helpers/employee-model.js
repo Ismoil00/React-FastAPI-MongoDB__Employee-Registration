@@ -7,8 +7,8 @@ const EmoloyeeModel = {
   salary: 0,
   age: 0,
   gender: "",
-  married: true,
-  education: [""],
+  married: false,
+  education: [],
   address: {
     city: "",
     street: "",

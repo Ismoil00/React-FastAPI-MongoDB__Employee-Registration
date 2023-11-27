@@ -1,12 +1,21 @@
-import React from 'react'
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Main from "./Main";
+import Create from "./Create";
+import Edit from "./Edit";
+import NotFound from "./NotFound";
 
-const Routes = () => {
-  
+const RoutesComp = () => {
   return (
-    <div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/edit" element={<Edit />} />
+        <Route path="/*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+};
 
-    </div>
-  )
-}
-
-export default Routes
+export default RoutesComp;

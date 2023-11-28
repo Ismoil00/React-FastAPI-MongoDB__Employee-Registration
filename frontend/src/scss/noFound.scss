@@ -1,9 +1,7 @@
+@import "mixins.scss";
+
 .not-found-text {
-    min-height: 100vh;
-    color: rgb(255, 128, 128);
-    text-align: center;
-    font-size: 2vw;
-    font-weight: bold;
-    display: grid;
-    place-content: center;
+  @include ErrorMsg;
+  display: grid;
+  place-content: center;
 }

@@ -1,0 +1,124 @@
+@import "variables.scss";
+@import "mixins.scss";
+
+.Create {
+  @include TopHeaders;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
+  .go-back-btn {
+    @include CommonButton;
+    margin-top: 10px;
+  }
+
+  .Create-Form {
+    @include BackgroundDesign;
+    width: 40%;
+    margin-top: 20px;
+    padding: 20px 2vw;
+    align-items: center;
+    gap: 10px;
+
+    section {
+      display: flex;
+      flex-flow: column;
+
+      input {
+        width: 300px;
+        min-width: 100px;
+        height: 25px;
+        outline: none;
+        border: 1px solid $tint;
+        border-radius: 3px;
+        padding: 5px;
+        color: $tint;
+        font-size: $normal;
+
+        &:focus {
+          background-color: rgba(41, 136, 115, 0.05);
+          box-shadow: 0 0 5px $ligth-tint;
+        }
+      }
+
+      label {
+        font-size: $normal;
+        font-weight: 500;
+        color: $tint;
+        margin-bottom: 2px;
+      }
+    }
+
+    .gender-dropdown {
+      width: 300px;
+      min-width: 100px;
+      height: 30px;
+      outline: none;
+      border: 1px solid $tint;
+      border-radius: 3px;
+      padding: 5px;
+      color: $tint;
+      font-size: $normal;
+    }
+
+    .checkbox {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+
+      input {
+        width: 25px;
+        min-width: 0;
+        margin-left: 10px;
+      }
+    }
+
+    .education-section {
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 1vw;
+      align-items: center;
+
+      input {
+        width: 255px;
+      }
+
+      .add-btn {
+        width: 30px;
+        height: 30px;
+        border: 1px solid $tint;
+        border-radius: 50%;
+        background-color: $white;
+        cursor: pointer;
+        font-size: $big;
+        color: $tint;
+        transition: all 0.2s;
+
+        &:hover {
+          background-color: $tint;
+          color: $white;
+
+        }
+      }
+    }
+
+    .education-section-label {
+      text-wrap: wrap;
+      width: 300px;
+    }
+
+    .btns {
+      padding: 20px 2vw;
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 5vw;
+
+      button {
+        @include CommonButton;
+        margin: 0!important;
+      }
+    }
+  }
+}

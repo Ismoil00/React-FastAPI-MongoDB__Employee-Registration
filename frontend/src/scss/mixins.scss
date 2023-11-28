@@ -1,0 +1,60 @@
+@import "variables.scss";
+
+// common button parameters:
+@mixin CommonButton {
+  padding: 5px 2vw;
+  background-color: $tint;
+  color: $white;
+  border: 1px solid $tint;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  font-size: $normal;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: $ligth-tint;
+    border-color: $ligth-tint;
+  }
+
+  &:active {
+    color: $ligth-gray;
+    box-shadow: 0 0 5px $tint;
+  }
+}
+
+
+// Error Message:
+@mixin ErrorMsg {
+  min-height: 100vh;
+  color: $ligth-red;
+  text-align: center;
+  font-size: $large;
+  font-weight: bold;
+}
+
+// Pages Header:
+@mixin TopHeaders {
+  width: 100%;
+  min-height: fit-content;
+  padding: 5vh 5vw;
+
+  h1 {
+    font-size: $larger;
+    color: $ligth-black;
+    text-align: center;
+  }
+}
+
+// Background Design:
+@mixin BackgroundDesign {
+  width: 30%;
+  min-width: 200px;
+  height: fit-content;
+  background-color: $ligth-gray;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgb(201, 201, 201);
+  display: flex;
+  flex-flow: column;
+  gap: 5px;
+}

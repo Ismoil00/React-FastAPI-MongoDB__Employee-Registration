@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EmoloyeeModel from "../helpers/employee-model";
 import api from "../helpers/api";
 import { useNavigate } from "react-router-dom";
+import "../scss/Create.scss";
 
 const Create = () => {
   const [employee, setEmployee] = useState(EmoloyeeModel);
@@ -54,8 +55,10 @@ const Create = () => {
   return (
     <div className="Create">
       <h1>Create an Employee</h1>
-      <button onClick={() => navigate("/")}>Go Back</button>
-      <form action="" onSubmit={(e) => onSaveEmployeeInfo(e)}>
+      <button className="go-back-btn" onClick={() => navigate("/")}>
+        Go Back
+      </button>
+      <form className="Create-Form" onSubmit={(e) => onSaveEmployeeInfo(e)}>
         <section>
           <label htmlFor="first_name">First Name:</label>
           <input
@@ -120,6 +123,7 @@ const Create = () => {
         <section>
           <label htmlFor="gender">Gender:</label>
           <select
+            className="gender-dropdown"
             name="gender"
             id="gender"
             required
@@ -130,7 +134,7 @@ const Create = () => {
             <option value="female">Female</option>
           </select>
         </section>
-        <section>
+        <section className="checkbox">
           <label htmlFor="married">Married:</label>
           <input
             type="checkbox"
@@ -140,27 +144,29 @@ const Create = () => {
           />
         </section>
         <section>
-          <label htmlFor="education">
+          <label htmlFor="education" className="education-section-label">
             Educations:{" "}
             {employee.education.map((v, i) => (
               <span key={i}>{v} </span>
             ))}
           </label>
-          <div>
+          <div className="education-section">
             <input
               type="text"
               value={education}
               name="education"
               onChange={(e) => setEducation(e.target.value)}
             />
-            <button type="button" onClick={addEducationToEmployeeInfo}>
+            <button
+              className="add-btn"
+              type="button"
+              onClick={addEducationToEmployeeInfo}
+            >
               +
             </button>
           </div>
         </section>
 
-        {/* ADDRESS SECTION */}
-        <h2>Address:</h2>
         <section>
           <label htmlFor="city">City</label>
           <input
@@ -203,12 +209,12 @@ const Create = () => {
             onChange={(e) => handleChange(e)}
           />
         </section>
-        <section>
+        <div className="btns">
           <button type="submit">Save</button>
           <button onClick={onClearAll} type="button">
             Clear
           </button>
-        </section>
+        </div>
       </form>
     </div>
   );

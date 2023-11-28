@@ -1,0 +1,70 @@
+@import "variables.scss";
+@import "mixins.scss";
+
+.Main {
+  @include TopHeaders;
+
+  .main-btns {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 2vw;
+    margin-top: 20px;
+    justify-content: center;
+
+    button {
+      @include CommonButton;
+    }
+  }
+
+  .error-msg {
+    @include ErrorMsg;
+    margin-top: 50px;
+  }
+
+  .articles {
+    margin-top: 50px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 5vw;
+
+    .article {
+      @include BackgroundDesign;
+      padding-bottom: 20px;
+
+      img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        object-position: center;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        letter-spacing: 0.5px;
+        padding-left: 2vw;
+        color: $ligth-black;
+        font-style: italic;
+
+        strong {
+          font-style: normal;
+        }
+      }
+
+      .article-btns {
+        width: 100%;
+        margin-top: 10px;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 2vw;
+        justify-content: center;
+
+        button {
+          @include CommonButton;
+        }
+      }
+    }
+  }
+}

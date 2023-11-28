@@ -4,6 +4,7 @@ import api from "../helpers/api";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { EditEmployeeContext } from "../App";
+import "../scss/Edit.scss";
 
 const Edit = () => {
   // const [employee, setEmployee] = useState(EmoloyeeModel);
@@ -49,7 +50,7 @@ const Edit = () => {
       if (response.status === 200) {
         setEmployee(EmoloyeeModel);
         alert(response.data.status);
-        navigate("/")
+        navigate("/");
       } else throw new Error("Something went wrong!");
     } catch (err) {
       console.log(err);
@@ -60,10 +61,12 @@ const Edit = () => {
   const onClearAll = () => setEmployee(EmoloyeeModel);
 
   return (
-    <div className="Create">
+    <div className="Edit">
       <h1>Edit an Employee</h1>
-      <button onClick={() => navigate("/")}>Go Back</button>
-      <form action="" onSubmit={(e) => onSaveEmployeeInfo(e)}>
+      <button className="go-back-btn" onClick={() => navigate("/")}>
+        Go Back
+      </button>
+      <form className="Edit-Form" onSubmit={(e) => onSaveEmployeeInfo(e)}>
         <section>
           <label htmlFor="first_name">First Name:</label>
           <input
@@ -128,6 +131,7 @@ const Edit = () => {
         <section>
           <label htmlFor="gender">Gender:</label>
           <select
+            className="gender-dropdown"
             name="gender"
             id="gender"
             required
@@ -138,7 +142,7 @@ const Edit = () => {
             <option value="female">Female</option>
           </select>
         </section>
-        <section>
+        <section className="checkbox">
           <label htmlFor="married">Married:</label>
           <input
             type="checkbox"
@@ -148,27 +152,34 @@ const Edit = () => {
           />
         </section>
         <section>
-          <label htmlFor="education">
+          <label
+            htmlFor="education"
+            className="education-section-label"
+          >
             Educations:{" "}
             {employee.education.map((v, i) => (
-              <span key={i}>{v} </span>
+              <span key={i}>
+                {v}{" "}
+              </span>
             ))}
           </label>
-          <div>
+          <div className="education-section">
             <input
               type="text"
               value={education}
               name="education"
               onChange={(e) => setEducation(e.target.value)}
             />
-            <button type="button" onClick={addEducationToEmployeeInfo}>
+            <button
+              className="add-btn"
+              type="button"
+              onClick={addEducationToEmployeeInfo}
+            >
               +
             </button>
           </div>
         </section>
 
-        {/* ADDRESS SECTION */}
-        <h2>Address:</h2>
         <section>
           <label htmlFor="city">City</label>
           <input
@@ -211,12 +222,12 @@ const Edit = () => {
             onChange={(e) => handleChange(e)}
           />
         </section>
-        <section>
+        <div className="btns">
           <button type="submit">Save</button>
           <button onClick={onClearAll} type="button">
             Clear
           </button>
-        </section>
+        </div>
       </form>
     </div>
   );

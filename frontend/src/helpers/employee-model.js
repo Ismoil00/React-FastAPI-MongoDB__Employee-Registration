@@ -4,9 +4,9 @@ const EmoloyeeModel = {
   last_name: "",
   email: "",
   profession: "",
-  salary: 0,
+  salary: "",
   age: 0,
-  gender: "",
+  gender: 0,
   married: false,
   education: [],
   address: {

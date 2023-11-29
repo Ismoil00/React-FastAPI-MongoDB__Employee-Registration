@@ -14,7 +14,7 @@ router = APIRouter()
 fs = GridFS(database)
 
 
-### END POINTS:
+# END POINTS:
 # get all employees:
 @router.get("/get-employees")
 async def get_employees():
@@ -26,7 +26,7 @@ async def get_employees():
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="The Database is empty!",
+                detail=f"The Database is empty!"
             )
     except Exception as e:
         raise HTTPException(
@@ -134,7 +134,8 @@ async def update_employee(id: str, info: Employee):
 @router.delete("/delete-employee/{id}")
 async def delete_employee(id: str):
     try:
-        result = employees_collection.find_one_and_delete({"_id": ObjectId(id)})
+        result = employees_collection.find_one_and_delete(
+            {"_id": ObjectId(id)})
 
         if result:
             return {
@@ -158,9 +159,17 @@ async def delete_all_employees():
     try:
         result = employees_collection.delete_many({})
 
-        print("result", result)
-
+        if result.deleted_count > 0:
+            return {
+                status: 200,
+                "details": f"{result.deleted_count} records were successfully deleted"
+            }
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="something went wrong while trying to delete all the records!"
+            )
     except Exception as e:
+        print("Error:", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
         )

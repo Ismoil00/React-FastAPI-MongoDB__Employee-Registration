@@ -33,6 +33,13 @@ const Main = () => {
   // deleting all employees:
   const onDeleteAll = async () => {
     try {
+      const response = await api.delete("/delete-all-employees");
+
+      if (response.status === 200) alert(response.details);
+      else
+        throw new Error(
+          "Something went wrong while trying to delete all the records!"
+        );
     } catch (err) {
       console.log(err);
     }

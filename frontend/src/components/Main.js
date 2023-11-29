@@ -35,8 +35,10 @@ const Main = () => {
     try {
       const response = await api.delete("/delete-all-employees");
 
-      if (response.status === 200) alert(response.details);
-      else
+      if (response.status === 200) {
+        alert(response.details);
+        fetchAllEmployees();
+      } else
         throw new Error(
           "Something went wrong while trying to delete all the records!"
         );

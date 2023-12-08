@@ -87,6 +87,7 @@ async def create_employee(info: Employee):
 @router.post("/save-image")
 async def save_image(image: UploadFile):
     try:
+        print(image)
         image_content = await image.read()
         image_id = fs.put(
             image_content, filename=image.filename, content_type=image.content_type

@@ -21,6 +21,15 @@
     align-items: center;
     gap: 10px;
 
+    .image-upload {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid $black;
+      margin-top: 20px;
+    }
+
     section {
       display: flex;
       flex-flow: column;
@@ -99,7 +108,6 @@
         &:hover {
           background-color: $tint;
           color: $white;
-
         }
       }
     }
@@ -117,7 +125,7 @@
 
       button {
         @include CommonButton;
-        margin: 0!important;
+        margin: 0 !important;
       }
     }
   }

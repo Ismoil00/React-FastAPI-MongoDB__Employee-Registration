@@ -4,9 +4,22 @@ import api from "../helpers/api";
 import { useNavigate } from "react-router-dom";
 import "../scss/Create.scss";
 
+const convertImageToBase64 = (img) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(img);
+
+  const data = new Promise((resolve, reject) => {
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (err) => reject(err);
+  });
+
+  return data;
+};
+
 const Create = () => {
   const [employee, setEmployee] = useState(EmoloyeeModel);
   const [education, setEducation] = useState("");
+  const [img, setImg] = useState("");
   const [invalid, setInvalid] = useState(null);
   const navigate = useNavigate();
 
@@ -29,6 +42,15 @@ const Create = () => {
     );
   };
 
+  // handle file change:
+  const handleChangeFile = async (e) => {
+    const file = e.target.files[0];
+    const image = await convertImageToBase64(file);
+    setImg(image);
+  };
+
+  // console.log(img);
+
   // adding educations to employee info:
   const addEducationToEmployeeInfo = () => {
     setEmployee((p) => ({ ...p, education: [...p.education, education] }));
@@ -40,6 +62,8 @@ const Create = () => {
     e.preventDefault();
     try {
       const response = await api.post("/create-employee", employee);
+      // const image = await api.post("/save-image", { image: img });
+      // console.log(image)
       if (response.status === 200) {
         setEmployee(EmoloyeeModel);
         alert(response.data.status);
@@ -59,6 +83,22 @@ const Create = () => {
         Go Back
       </button>
       <form className="Create-Form" onSubmit={(e) => onSaveEmployeeInfo(e)}>
+        <section>
+          <label htmlFor="image-upload">
+            <img
+              src="images/face-icon.png"
+              alt="employee img"
+              className="image-upload"
+            />
+          </label>
+          <input
+            type="file"
+            name="image-upload"
+            id="image-upload"
+            style={{ display: "none" }}
+            onChange={handleChangeFile}
+          />
+        </section>
         <section>
           <label htmlFor="first_name">First Name:</label>
           <input

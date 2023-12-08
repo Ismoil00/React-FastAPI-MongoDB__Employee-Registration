@@ -21,6 +21,15 @@
     align-items: center;
     gap: 10px;
 
+    .image-upload {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 1px solid $black;
+      margin-top: 20px;
+    }
+
     section {
       display: flex;
       flex-flow: column;

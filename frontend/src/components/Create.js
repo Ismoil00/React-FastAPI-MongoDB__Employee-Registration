@@ -4,6 +4,7 @@ import api from "../helpers/api";
 import { useNavigate } from "react-router-dom";
 import "../scss/Create.scss";
 
+// image format conversion:
 const convertImageToBase64 = (img) => {
   const reader = new FileReader();
   reader.readAsDataURL(img);
@@ -46,7 +47,8 @@ const Create = () => {
   const handleChangeFile = async (e) => {
     const file = e.target.files[0];
     const image = await convertImageToBase64(file);
-    setImg(image);
+    console.log(image)
+    // setImg(image);
   };
 
   // console.log(img);

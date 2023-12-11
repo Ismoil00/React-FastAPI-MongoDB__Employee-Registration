@@ -39,4 +39,4 @@ class Employee(BaseModel):
     married: bool | None = None
     education: list[str] | None = None
     address: EmployeeAddress
-    image_url: str | None = None
+    image_url: str

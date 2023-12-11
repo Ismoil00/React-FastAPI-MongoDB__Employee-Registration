@@ -53,7 +53,7 @@ async def get_image_by_id(image_id: str):
         raise HTTPException(status_code=404, detail="Image not found") from e
 
 
-# creating a employee:
+# creating an employee:
 @router.post("/create-employee")
 async def create_employee(info: Employee):
     try:
@@ -76,7 +76,7 @@ async def create_employee(info: Employee):
         )
 
 
-# saving image:
+# saving an image:
 @router.post("/save-image")
 async def save_image(image: UploadFile = File(...)):
     try:
@@ -96,7 +96,7 @@ async def save_image(image: UploadFile = File(...)):
         )
 
 
-# update a employee:
+# update an employee:
 @router.put("/update-employee/{id}")
 async def update_employee(id: str, info: Employee):
     try:
@@ -121,7 +121,7 @@ async def update_employee(id: str, info: Employee):
         )
 
 
-# delete a employee:
+# delete an employee:
 @router.delete("/delete-employee/{id}")
 async def delete_employee(id: str):
     try:

@@ -3,7 +3,7 @@ from routers import router
 from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
-    "http://localhost:3002",
+    "http://localhost:3000",
 ]
 
 app = FastAPI()

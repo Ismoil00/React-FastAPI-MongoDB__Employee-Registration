@@ -10,6 +10,8 @@ const Edit = () => {
   // const [employee, setEmployee] = useState(EmoloyeeModel);
   const [employee, setEmployee] = useContext(EditEmployeeContext);
   const [education, setEducation] = useState("");
+  const [img, setImg] = useState(null);
+  const [imageUrl, setImageUrl] = useState(employee.image_url);
   const [invalid, setInvalid] = useState(null);
   const navigate = useNavigate();
 
@@ -32,6 +34,23 @@ const Edit = () => {
     );
   };
 
+  // handle file change:
+  const handleFileChange = (event) => {
+    const selectedImg = event.target.files[0];
+    setImg(selectedImg);
+
+    // to display it on the frontend:
+    if (selectedImg) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+
+      reader.readAsDataURL(selectedImg);
+    }
+  };
+
   // adding educations to employee info:
   const addEducationToEmployeeInfo = () => {
     setEmployee((p) => ({ ...p, education: [...p.education, education] }));
@@ -42,6 +61,30 @@ const Edit = () => {
   const onSaveEmployeeInfo = async (e) => {
     e.preventDefault();
     try {
+      let delete_img;
+      if (employee.image_url !== imageUrl) {
+        // we save an employee image:
+        const formData = new FormData();
+        formData.append("image", img);
+
+        const image = await api.post("/save-image", formData);
+
+        if (image.status !== 200)
+          throw new Error("Something went wrong while saving image!");
+
+        // we delete a previously image if another image was chosen:
+        const id = employee.image_url.split("/")[4];
+        delete_img = await api.delete(`/delete-image/${id}`);
+
+        if (delete_img.status !== 200)
+          throw new Error(
+            "Something went wrong while deleting previous image!"
+          );
+
+        employee.image_url = `http://localhost:8000/get-image/${image.data.id}`;
+      }
+
+      // we save the whole employee data
       const response = await api.put(
         `/update-employee/${employee.id}`,
         employee
@@ -49,6 +92,8 @@ const Edit = () => {
 
       if (response.status === 200) {
         setEmployee(EmoloyeeModel);
+        setImageUrl("images/face-icon.png");
+        setImg(null);
         alert(response.data.status);
         navigate("/");
       } else throw new Error("Something went wrong!");
@@ -58,7 +103,10 @@ const Edit = () => {
   };
 
   // clearing all:
-  const onClearAll = () => setEmployee(EmoloyeeModel);
+  const onClearAll = () => {
+    setImageUrl("images/face-icon.png");
+    setEmployee(EmoloyeeModel);
+  };
 
   return (
     <div className="Edit">
@@ -67,6 +115,18 @@ const Edit = () => {
         Go Back
       </button>
       <form className="Edit-Form" onSubmit={(e) => onSaveEmployeeInfo(e)}>
+        <section>
+          <label htmlFor="image-upload">
+            <img src={imageUrl} alt="employee img" className="image-upload" />
+          </label>
+          <input
+            type="file"
+            name="image-upload"
+            id="image-upload"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+        </section>
         <section>
           <label htmlFor="first_name">First Name:</label>
           <input
@@ -152,15 +212,10 @@ const Edit = () => {
           />
         </section>
         <section>
-          <label
-            htmlFor="education"
-            className="education-section-label"
-          >
+          <label htmlFor="education" className="education-section-label">
             Educations:{" "}
             {employee.education.map((v, i) => (
-              <span key={i}>
-                {v}{" "}
-              </span>
+              <span key={i}>{v} </span>
             ))}
           </label>
           <div className="education-section">

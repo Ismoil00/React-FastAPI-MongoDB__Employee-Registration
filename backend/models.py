@@ -17,6 +17,7 @@ form = {
         "building": "",
         "home": 0,
     },
+    "image_url": "",
 }
 
 
@@ -38,4 +39,4 @@ class Employee(BaseModel):
     married: bool | None = None
     education: list[str] | None = None
     address: EmployeeAddress
-    image_id: str | None = None
+    image_url: str | None = None

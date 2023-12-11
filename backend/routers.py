@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, UploadFile
+from fastapi import APIRouter, HTTPException, status, UploadFile, File
 from fastapi.responses import StreamingResponse
 from models import Employee
 from config import employees_collection, database
@@ -6,7 +6,8 @@ from fastapi.encoders import jsonable_encoder
 from bson import ObjectId
 from schema import get_all_employees
 from gridfs import GridFS
-
+from fastapi.responses import StreamingResponse
+import io
 
 router = APIRouter()
 
@@ -14,7 +15,7 @@ router = APIRouter()
 fs = GridFS(database)
 
 
-# END POINTS:
+# -------------------------------------------- END POINTS --------------------------------------------:
 # get all employees:
 @router.get("/get-employees")
 async def get_employees():
@@ -34,30 +35,22 @@ async def get_employees():
         )
 
 
-# get image:
+# get image by its id:
 @router.get("/get-image/{image_id}")
-async def get_image(image_id: str):
+async def get_image_by_id(image_id: str):
     try:
-        # Retrieve image content from MongoDB
-        file_data = fs.get(ObjectId(image_id))
+        image_data = fs.get(ObjectId(image_id))
 
         # Check if the file exists
-        if file_data is None:
+        if image_data is None:
             raise HTTPException(
                 status_code=404, detail=f"Image with id {image_id} not found"
             )
 
-        # Create a StreamingResponse to send the image to the client
-        return StreamingResponse(
-            iter(file_data),
-            media_type=file_data.content_type,
-            headers={"Content-Disposition": f"filename={file_data.filename}"},
-        )
+        return StreamingResponse(io.BytesIO(image_data.read()), media_type="*/*")
 
     except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+        raise HTTPException(status_code=404, detail="Image not found") from e
 
 
 # creating a employee:
@@ -85,16 +78,13 @@ async def create_employee(info: Employee):
 
 # saving image:
 @router.post("/save-image")
-async def save_image(image: UploadFile):
+async def save_image(image: UploadFile = File(...)):
     try:
-        print(image)
         image_content = await image.read()
-        image_id = fs.put(
-            image_content, filename=image.filename, content_type=image.content_type
-        )
+        image_id = fs.put(image_content, filename=image.filename)
 
         if image_id:
-            return str(image_id)
+            return {"message": "Image uploaded successfully!", "id": str(image_id)}
         else:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -170,7 +160,26 @@ async def delete_all_employees():
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="something went wrong while trying to delete all the records!"
             )
     except Exception as e:
-        print("Error:", e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+        )
+
+
+# delete an image by its id:
+@router.delete("/delete-image/{image_id}")
+async def delete_image(image_id: str):
+    try:
+        # Convert the image_id to ObjectId
+        image_object_id = ObjectId(image_id)
+
+        # Check if the image exists
+        if fs.exists({"_id": image_object_id}):
+            # Delete the image from MongoDB Atlas
+            fs.delete(image_object_id)
+            return {"message": "Image deleted successfully!", "status": 200}
+        else:
+            raise HTTPException(status_code=404, detail="Image not found")
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error deleting image: {str(e)}"
         )

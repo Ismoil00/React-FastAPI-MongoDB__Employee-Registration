@@ -10,6 +10,7 @@ def get_employee(employee):
         "gender": employee["gender"],
         "married": employee["married"],
         "education": employee["education"],
+        "image_url": employee["image_url"],
         "address": {
             "city": employee["address"]["city"],
             "street": employee["address"]["street"],

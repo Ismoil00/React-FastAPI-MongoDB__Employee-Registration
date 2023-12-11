@@ -15,7 +15,7 @@ const EmoloyeeModel = {
     building: "",
     home: 0,
   },
-  image_id: "",
+  image_url: "",
 };
 
 export default EmoloyeeModel;

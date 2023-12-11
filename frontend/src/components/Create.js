@@ -4,23 +4,11 @@ import api from "../helpers/api";
 import { useNavigate } from "react-router-dom";
 import "../scss/Create.scss";
 
-// image format conversion:
-const convertImageToBase64 = (img) => {
-  const reader = new FileReader();
-  reader.readAsDataURL(img);
-
-  const data = new Promise((resolve, reject) => {
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (err) => reject(err);
-  });
-
-  return data;
-};
-
 const Create = () => {
   const [employee, setEmployee] = useState(EmoloyeeModel);
   const [education, setEducation] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(null);
+  const [imageUrl, setImageUrl] = useState("images/face-icon.png");
   const [invalid, setInvalid] = useState(null);
   const navigate = useNavigate();
 
@@ -44,14 +32,21 @@ const Create = () => {
   };
 
   // handle file change:
-  const handleChangeFile = async (e) => {
-    const file = e.target.files[0];
-    const image = await convertImageToBase64(file);
-    console.log(image)
-    // setImg(image);
-  };
+  const handleFileChange = (event) => {
+    const selectedImg = event.target.files[0];
+    setImg(selectedImg);
 
-  // console.log(img);
+    // to display it on the frontend:
+    if (selectedImg) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+
+      reader.readAsDataURL(selectedImg);
+    }
+  };
 
   // adding educations to employee info:
   const addEducationToEmployeeInfo = () => {
@@ -63,11 +58,22 @@ const Create = () => {
   const onSaveEmployeeInfo = async (e) => {
     e.preventDefault();
     try {
+      // we save an employee image:
+      const formData = new FormData();
+      formData.append("image", img);
+      const image = await api.post("/save-image", formData);
+
+      if (image.status !== 200)
+        throw new Error("Something went wrong while saving image!");
+
+      employee.image_url = `http://localhost:8000/get-image/${image.data.id}`;
+
       const response = await api.post("/create-employee", employee);
-      // const image = await api.post("/save-image", { image: img });
-      // console.log(image)
+
       if (response.status === 200) {
         setEmployee(EmoloyeeModel);
+        setImageUrl("images/face-icon.png");
+        setImg(null);
         alert(response.data.status);
       } else throw new Error("Something went wrong!");
     } catch (err) {
@@ -76,7 +82,10 @@ const Create = () => {
   };
 
   // clearing all:
-  const onClearAll = () => setEmployee(EmoloyeeModel);
+  const onClearAll = () => {
+    setImageUrl("images/face-icon.png");
+    setEmployee(EmoloyeeModel);
+  };
 
   return (
     <div className="Create">
@@ -87,18 +96,14 @@ const Create = () => {
       <form className="Create-Form" onSubmit={(e) => onSaveEmployeeInfo(e)}>
         <section>
           <label htmlFor="image-upload">
-            <img
-              src="images/face-icon.png"
-              alt="employee img"
-              className="image-upload"
-            />
+            <img src={imageUrl} alt="employee img" className="image-upload" />
           </label>
           <input
             type="file"
             name="image-upload"
             id="image-upload"
             style={{ display: "none" }}
-            onChange={handleChangeFile}
+            onChange={handleFileChange}
           />
         </section>
         <section>

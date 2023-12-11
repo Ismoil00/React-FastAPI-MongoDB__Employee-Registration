@@ -83,7 +83,7 @@ const Main = () => {
           emoloyees.map((item) => (
             <article key={item.id} className="article">
               <img
-                src="images/face.png"
+                src={item.image_url}
                 width={300}
                 alt="employee img"
                 className="employee-img"

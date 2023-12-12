@@ -40,8 +40,11 @@ const Main = () => {
     try {
       setLoader(true);
       const response = await api.delete("/delete-all-employees");
+      // const delete_all_images = await api.delete("/delete-all-images");
 
-      if (response.status === 200) {
+      // console.log("RES", delete_all_images);
+
+      if (response.status === 200 && delete_all_images.status === 200) {
         alert(response.details);
         fetchAllEmployees();
       } else

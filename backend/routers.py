@@ -183,3 +183,16 @@ async def delete_image(image_id: str):
         raise HTTPException(
             status_code=500, detail=f"Error deleting image: {str(e)}"
         )
+
+
+# delete all images:
+# @router.delete("/delete-all-images")
+# async def delete_all_images():
+#     try:
+#         # Delete all images from MongoDB Atlas
+#         fs.delete_many({})
+#         return {"message": "All images deleted successfully!", "status": 200}
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=500, detail=f"Error deleting all images: {str(e)}"
+#         )
